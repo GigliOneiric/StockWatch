@@ -1,12 +1,11 @@
 import json
-from datetime import datetime
-from http.client import IncompleteRead
-
 import tweepy
+import Config.twitter_api_keys
+import Config.text
+from http.client import IncompleteRead
 from elasticsearch import Elasticsearch
 from textblob import TextBlob
 
-import Config.twitter_api_keys
 
 consumer_key = Config.twitter_api_keys.consumer_key
 consumer_secret = Config.twitter_api_keys.consumer_secret
@@ -27,17 +26,17 @@ class TweetStreamListener(tweepy.StreamingClient):
         dict_data = json.loads(data)
 
         # pass Tweet into TextBlob to predict the sentiment
-        tweet = TextBlob(dict_data['data']['text'])
+        tweet = TextBlob(dict_data[Config.text.data][Config.text.text])
 
         # if the object contains Tweet
         if tweet:
             # determine if sentiment is positive, negative, or neutral
             if tweet.sentiment.polarity < 0:
-                sentiment = "negative"
+                sentiment = Config.text.negative
             elif tweet.sentiment.polarity == 0:
-                sentiment = "neutral"
+                sentiment = Config.text.neutral
             else:
-                sentiment = "positive"
+                sentiment = Config.text.positive
 
             # print the predicted sentiment with the Tweets
             print(sentiment, tweet.sentiment.polarity, tweet)
@@ -49,29 +48,29 @@ class TweetStreamListener(tweepy.StreamingClient):
 
             dict_data_len = 0
 
-            if 'hashtags' in dict_data['data']['entities']:
-                dict_data_len = len(dict_data['data']['entities']['hashtags'])
+            if Config.text.hashtags in dict_data[Config.text.data][Config.text.entities]:
+                dict_data_len = len(dict_data[Config.text.data][Config.text.entities][Config.text.hashtags])
 
             if dict_data_len > 0:
                 for i in range(dict_data_len - 1):
-                    hashtag = dict_data['data']['entities']['hashtags'][i]['tag'].title()
+                    hashtag = dict_data[Config.text.data][Config.text.entities][Config.text.hashtags][i][Config.text.tag].title()
                     hashtags = list.append(hashtag)
             else:
                 # Elasticeach does not take None object
-                hashtags = ['None']
+                hashtags = [Config.text.none]
 
             # add text and sentiment info to elasticsearch
             es.index(index="logstash-a",
                      # create/inject data into the cluster with index as 'logstash-a'
                      # create the naming pattern in Management/Kinaba later in order to push the data to a dashboard
                      doc_type="test-type",
-                     body={"author": dict_data["includes"]["users"][0]["name"],
-                           "date": dict_data['data']['created_at'],
-                           "text": dict_data['data']['text'],
-                           "hashtags": hashtags,
-                           "polarity": tweet.sentiment.polarity,
-                           "subjectivity": tweet.sentiment.subjectivity,
-                           "sentiment": sentiment})
+                     body={Config.text.author: dict_data[Config.text.includes][Config.text.users][0][Config.text.name],
+                           Config.text.date: dict_data[Config.text.data][Config.text.created_at],
+                           Config.text.text: dict_data[Config.text.data][Config.text.text],
+                           Config.text.hashtags: hashtags,
+                           Config.text.polarity: tweet.sentiment.polarity,
+                           Config.text.subjectivity: tweet.sentiment.subjectivity,
+                           Config.text.sentiment: sentiment})
 
         return True
 
@@ -85,7 +84,7 @@ stream.add_rules(tweepy.StreamRule("tesla OR #tesla) AND from:154248541644362547
 
 while True:
     try:
-        stream.filter(expansions=['author_id'], tweet_fields=['created_at', 'entities'])
+        stream.filter(expansions=[Config.text.author_id], tweet_fields=[Config.text.created_at, Config.text.entities])
         break
     except IncompleteRead:
         continue
