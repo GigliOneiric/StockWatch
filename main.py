@@ -3,6 +3,7 @@ from http.client import IncompleteRead
 
 import tweepy
 from elasticsearch import Elasticsearch
+from textblob import TextBlob
 
 import Config.twitter_api_keys
 
@@ -23,7 +24,22 @@ class TweetStreamListener(tweepy.StreamingClient):
 
     def on_data(self, data):
         dict_data = json.loads(data)
-        print(data)
+
+        # pass Tweet into TextBlob to predict the sentiment
+        tweet = TextBlob(dict_data['data']['text'])
+
+        # if the object contains Tweet
+        if tweet:
+            # determine if sentiment is positive, negative, or neutral
+            if tweet.sentiment.polarity < 0:
+                sentiment = "negative"
+            elif tweet.sentiment.polarity == 0:
+                sentiment = "neutral"
+            else:
+                sentiment = "positive"
+
+            # print the predicted sentiment with the Tweets
+            print(sentiment, tweet.sentiment.polarity, tweet)
 
         return True
 
