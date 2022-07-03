@@ -6,7 +6,6 @@ from http.client import IncompleteRead
 from elasticsearch import Elasticsearch
 from textblob import TextBlob
 
-
 consumer_key = Config.twitter_api_keys.consumer_key
 consumer_secret = Config.twitter_api_keys.consumer_secret
 access_token = Config.twitter_api_keys.access_token
@@ -14,7 +13,7 @@ access_token_secret = Config.twitter_api_keys.access_token_secret
 bearer_token = Config.twitter_api_keys.bearer_token
 
 # create instance of elasticsearch
-es = Elasticsearch()
+es = Elasticsearch(hosts="http://elastic:changeme@localhost:9200/")
 
 client = tweepy.Client(bearer_token=bearer_token, consumer_key=consumer_key, consumer_secret=consumer_secret,
                        access_token=access_token, access_token_secret=access_token_secret, wait_on_rate_limit=True)
@@ -41,7 +40,7 @@ class TweetStreamListener(tweepy.StreamingClient):
             # print the predicted sentiment with the Tweets
             print(sentiment, tweet.sentiment.polarity, tweet)
 
-        ####################
+            ####################
 
             # extract the first hashtag from the object
             # transform the Hashtags into proper case
@@ -53,24 +52,25 @@ class TweetStreamListener(tweepy.StreamingClient):
 
             if dict_data_len > 0:
                 for i in range(dict_data_len - 1):
-                    hashtag = dict_data[Config.text.data][Config.text.entities][Config.text.hashtags][i][Config.text.tag].title()
+                    hashtag = dict_data[Config.text.data][Config.text.entities][Config.text.hashtags][i][
+                        Config.text.tag].title()
                     hashtags = list.append(hashtag)
             else:
                 # Elasticeach does not take None object
                 hashtags = [Config.text.none]
 
+            doc = {
+                   Config.text.author: dict_data[Config.text.includes][Config.text.users][0][Config.text.name],
+                   Config.text.date: dict_data[Config.text.data][Config.text.created_at],
+                   Config.text.text: dict_data[Config.text.data][Config.text.text],
+                   Config.text.hashtags: hashtags,
+                   Config.text.polarity: tweet.sentiment.polarity,
+                   Config.text.subjectivity: tweet.sentiment.subjectivity,
+                   Config.text.sentiment: sentiment,
+                   }
+
             # add text and sentiment info to elasticsearch
-            es.index(index="logstash-a",
-                     # create/inject data into the cluster with index as 'logstash-a'
-                     # create the naming pattern in Management/Kinaba later in order to push the data to a dashboard
-                     doc_type="test-type",
-                     body={Config.text.author: dict_data[Config.text.includes][Config.text.users][0][Config.text.name],
-                           Config.text.date: dict_data[Config.text.data][Config.text.created_at],
-                           Config.text.text: dict_data[Config.text.data][Config.text.text],
-                           Config.text.hashtags: hashtags,
-                           Config.text.polarity: tweet.sentiment.polarity,
-                           Config.text.subjectivity: tweet.sentiment.subjectivity,
-                           Config.text.sentiment: sentiment})
+            es.index(index="twitter", document=doc)
 
         return True
 
