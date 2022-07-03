@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from http.client import IncompleteRead
 
 import tweepy
@@ -41,6 +42,37 @@ class TweetStreamListener(tweepy.StreamingClient):
             # print the predicted sentiment with the Tweets
             print(sentiment, tweet.sentiment.polarity, tweet)
 
+        ####################
+
+            # extract the first hashtag from the object
+            # transform the Hashtags into proper case
+
+            dict_data_len = 0
+
+            if 'hashtags' in dict_data['data']['entities']:
+                dict_data_len = len(dict_data['data']['entities']['hashtags'])
+
+            if dict_data_len > 0:
+                for i in range(dict_data_len - 1):
+                    hashtag = dict_data['data']['entities']['hashtags'][i]['tag'].title()
+                    hashtags = list.append(hashtag)
+            else:
+                # Elasticeach does not take None object
+                hashtags = ['None']
+
+            # add text and sentiment info to elasticsearch
+            es.index(index="logstash-a",
+                     # create/inject data into the cluster with index as 'logstash-a'
+                     # create the naming pattern in Management/Kinaba later in order to push the data to a dashboard
+                     doc_type="test-type",
+                     body={"author": dict_data["includes"]["users"][0]["name"],
+                           "date": dict_data['data']['created_at'],
+                           "text": dict_data['data']['text'],
+                           "hashtags": hashtags,
+                           "polarity": tweet.sentiment.polarity,
+                           "subjectivity": tweet.sentiment.subjectivity,
+                           "sentiment": sentiment})
+
         return True
 
     # on failure, print the error code and do not disconnect
@@ -53,7 +85,7 @@ stream.add_rules(tweepy.StreamRule("tesla OR #tesla) AND from:154248541644362547
 
 while True:
     try:
-        stream.filter(expansions=["author_id"], tweet_fields=["created_at"])
+        stream.filter(expansions=['author_id'], tweet_fields=['created_at', 'entities'])
         break
     except IncompleteRead:
         continue
