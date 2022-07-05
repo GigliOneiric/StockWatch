@@ -6,7 +6,7 @@ from Cleaning import TextPreprocess
 def analyzeSentiment(dict_data):
     # pass Tweet into TextBlob to predict the sentiment
     tweet = TextBlob(dict_data[Config.text.data][Config.text.text])
-    tweet_cleaned = DataCleaner.clean_data(tweet)
+    tweet_cleaned = TextBlob(TextPreprocess.preprocess(dict_data[Config.text.data][Config.text.text]))
 
     # if the object contains Tweet
     if tweet_cleaned:
