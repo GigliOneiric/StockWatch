@@ -1,6 +1,6 @@
 import Config.text
 from textblob import TextBlob
-from Cleaning import DataCleaner
+from Cleaning import TextPreprocess
 
 
 def analyzeSentiment(dict_data):
