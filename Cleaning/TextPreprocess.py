@@ -11,8 +11,8 @@ def preprocess(text):
 
     text = replaceURL(text)
     text = replaceAtUser(text)
-    text = removeNumbers(text)
     text = to_lower(text)
+    text = replaceAtUser(text)
     text = lemmatize(text)
     text = remove_punct(text)
 
