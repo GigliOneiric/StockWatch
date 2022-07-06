@@ -15,10 +15,11 @@ def write_tweet(dict_data, tweet, sentiment):
         dict_data_len = len(dict_data[Config.text.data][Config.text.entities][Config.text.hashtags])
 
     if dict_data_len > 0:
+        hashtags = list()
         for i in range(dict_data_len - 1):
             hashtag = dict_data[Config.text.data][Config.text.entities][Config.text.hashtags][i][
-                Config.text.tag].title()
-            hashtags = list.append(hashtag)
+                Config.text.tag]
+            hashtags.append(hashtag)
     else:
         # Elasticeach does not take None object
         hashtags = [Config.text.none]

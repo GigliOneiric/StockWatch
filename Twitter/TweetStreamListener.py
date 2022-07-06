@@ -44,6 +44,7 @@ class TweetStreamListener(tweepy.StreamingClient):
 stream = TweetStreamListener(bearer_token=bearer_token, wait_on_rate_limit=True)
 stream.add_rules(tweepy.StreamRule("tesla OR #tesla) AND from:1542485416443625472"))
 
+
 try:
     stream.filter(expansions=[Config.text.author_id],
                   tweet_fields=[Config.text.created_at, Config.text.entities], threaded=True)
