@@ -18,7 +18,7 @@ def preprocess(text):
     text = replace_atUser(text)
     text = replace_smiley(text)
     text = replace_emojis(text)
-    # text = remove_leetspeak(text)
+    text = remove_leetspeak(text)
     text = remove_numbers(text)
     text = replace_contractions(text)
     text = remove_punct(text)
@@ -49,7 +49,7 @@ def remove_html_tags(text):
 
 
 def remove_leetspeak(text):
-    return re.sub(r"[A-Za-z]+\d+|\d+[A-Za-z]+|[A-Za-z]+\d+[A-Za-z]+",'',text).strip()
+    return re.sub(r"[A-Za-z]+\d+[A-Za-z]+|\d+[A-Za-z]+\d+|[A-Za-z]+\d+|\d+[A-Za-z]+",'',text).strip()
 
 
 def replace_contractions(text):
@@ -511,8 +511,10 @@ def remove_emojis(text):
 
 
 def replace_emojis(text):
+    # Group by same meaning
     text = re.sub('[\U0001F550-\U0001F567]', " of the clock ", text)
 
+    # Replace emojis by their short text
     text = emoji.demojize(text)
     text = text.replace(":", " ")
     return ' '.join(text.split())

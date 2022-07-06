@@ -41,9 +41,10 @@ class TweetStreamListener(tweepy.StreamingClient):
             print(status_code)
 
 
-stream = TweetStreamListener(bearer_token=bearer_token, wait_on_rate_limit=True)
-stream.add_rules(tweepy.StreamRule("tesla OR #tesla) AND from:1542485416443625472"))
+stream = TweetStreamListener(bearer_token=bearer_token, wait_on_rate_limit=False)
+stream.add_rules(tweepy.StreamRule("(tesla OR #tesla) from:1542485416443625472"))
 
+# print(stream.get_rules())
 
 try:
     stream.filter(expansions=[Config.text.author_id],
