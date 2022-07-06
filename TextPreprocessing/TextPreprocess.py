@@ -49,7 +49,7 @@ def remove_html_tags(text):
 
 
 def remove_leetspeak(text):
-    return re.sub(r"[A-Za-z]+\d+[A-Za-z]+|\d+[A-Za-z]+\d+|[A-Za-z]+\d+|\d+[A-Za-z]+",'',text).strip()
+    return re.sub(r"[A-Za-z]+\d+[A-Za-z]+|\d+[A-Za-z]+\d+|[A-Za-z]+\d+|\d+[A-Za-z]+", '', text).strip()
 
 
 def replace_contractions(text):
@@ -354,7 +354,7 @@ def replace_smiley(text):
         ":>": "",
         ":i": "",
         "l:": "",
-        ":(": " sad ",
+        ":(": "",
         ":c": " sad ",
         ":[": " sad ",
         "=(": " sad ",
@@ -516,8 +516,18 @@ def replace_emojis(text):
 
     # Replace emojis by their short text
     text = emoji.demojize(text)
+
+    # Remove everything between emoji
+    text = re.sub(
+        r"(?<=:[a-zA-Z])(.*?)(?=:)",
+        lambda g: "{}".format(re.sub(r"[^a-zA-Z]", "", g.group(1))),
+        text,
+    )
+
+    # Remove : at the beginning and the end of an emoji
     text = text.replace(":", " ")
-    return ' '.join(text.split())
+
+    return text
 
 
 def clean_white_space(text):
