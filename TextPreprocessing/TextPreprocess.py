@@ -1,5 +1,4 @@
 import re
-import unicodedata
 
 import emoji
 import nltk
@@ -7,7 +6,6 @@ import contractions
 from string import punctuation
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
-from textblob import TextBlob
 
 
 def preprocess(text):
@@ -113,12 +111,10 @@ def remove_smiley(text):
         ":D": "",
         ":-D": "",
         ":))": "",
-        ";-)": "",
         ";-]": "",
         ";o)": "",
         "¦)": "",
         "=:)": "",
-        ":3": "",
         ":9": "",
         "c:": "",
         ":'D": "",
@@ -142,7 +138,6 @@ def remove_smiley(text):
         "^-^": "",
         "^.^": "",
         "^,^": "",
-        "^^": "",
         "^^": "",
         "^^'": "",
         "^^°": "",
@@ -181,7 +176,6 @@ def remove_smiley(text):
         ">:o": "",
         ">:O": "",
         ">:@": "",
-        "D:": "",
         "DX": "",
         ":-E3": "",
         "x_X": "",
@@ -212,7 +206,6 @@ def remove_smiley(text):
         "U_U": "",
         "v_v": "",
         ":<": "",
-        "°_°": "",
         "m(": "",
         "°^°": "",
         "(@_@)": "",
@@ -306,12 +299,10 @@ def replace_smiley(text):
         ":D": "",
         ":-D": "",
         ":))": "",
-        ";-)": "",
         ";-]": "",
         ";o)": "",
         "¦)": "",
         "=:)": "",
-        ":3": "",
         ":9": "",
         "c:": "",
         ":'D": "",
@@ -335,7 +326,6 @@ def replace_smiley(text):
         "^-^": "",
         "^.^": "",
         "^,^": "",
-        "^^": "",
         "^^": "",
         "^^'": "",
         "^^°": "",
@@ -374,7 +364,6 @@ def replace_smiley(text):
         ">:o": "",
         ">:O": "",
         ">:@": "",
-        "D:": "",
         "DX": "",
         ":-E3": "",
         "x_X": "",
@@ -383,7 +372,7 @@ def replace_smiley(text):
         "x.X": "",
         "X.x": "",
         "x.x": "",
-        "°_°": "",
+
         ">.<": "",
         ">,<": "",
         "-.-": "",
