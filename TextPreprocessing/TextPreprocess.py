@@ -3,14 +3,12 @@ import Config.text
 import contractions
 import nltk
 
-from typing import List, Union
-from nltk import word_tokenize
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 from string import punctuation
-from spellchecker import SpellChecker
 from TextPreprocessing.Helpers import Smileys
 from TextPreprocessing.Helpers import Emojis
+from TextPreprocessing.Helpers import SpellCheck
 from TextPreprocessing.Helpers.StopWords import StopWords
 
 
@@ -129,20 +127,5 @@ def clean_white_space(text):
     return re.sub(' +', ' ', text)
 
 
-def check_spelling(input_text_or_list: Union[str, List[str]], lang='en'):
-    """ Check and correct spellings of the text list """
-    if input_text_or_list is None or len(input_text_or_list) == 0:
-        return ''
-    spelling_checker = SpellChecker(language=lang, distance=1)
-    # TODO: add acronyms into spell checker to ignore auto correction specified by _IGNORE_SPELLCHECK_WORD_FILE_PATH
-
-    if isinstance(input_text_or_list, str):
-        if not input_text_or_list.islower():
-            input_text_or_list = input_text_or_list.lower()
-        tokens = word_tokenize(input_text_or_list)
-    else:
-        tokens = [token.lower() for token in input_text_or_list if token is not None and len(token) > 0]
-    misspelled = spelling_checker.unknown(tokens)
-    for word in misspelled:
-        tokens[tokens.index(word)] = spelling_checker.correction(word)
-    return ' '.join(tokens).strip()
+def check_spelling(text):
+    return SpellCheck.check_spelling(text, lang='en')
