@@ -7,6 +7,8 @@ from string import punctuation
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 
+import Config.text
+
 
 def preprocess(text):
     downloadNLTK()
@@ -83,7 +85,7 @@ def remove_punct(text):
 
 
 def stem(text):
-    stemmer = SnowballStemmer('english')
+    stemmer = SnowballStemmer(Config.text.english)
 
     stemmed_word = [stemmer.stem(word) for sent in nltk.sent_tokenize(text) for word in
                     nltk.word_tokenize(sent)]
@@ -290,12 +292,12 @@ def replace_smiley(text):
     # https://de.wiktionary.org/wiki/Verzeichnis:International/Smileys
 
     SMILEYS = {
-        ":)": " smile ",
-        ":-)": " smile ",
+        ":)": " "+Config.text.smile+" ",
+        ":-)": " "+Config.text.smile+" ",
         ":^)": "",
-        ":-]": "",
-        "=]": "",
-        ":]": "",
+        ":-]": " "+Config.text.smile+" ",
+        "=]": " "+Config.text.smile+" ",
+        ":]": " "+Config.text.smile+" ",
         ":D": "",
         ":-D": "",
         ":))": "",
@@ -306,8 +308,8 @@ def replace_smiley(text):
         ":9": "",
         "c:": "",
         ":'D": "",
-        "xD": "",
-        "XD": "",
+        "xD": " "+Config.text.laugh+" ",
+        "XD": " "+Config.text.laugh+" ",
         "B)": "",
         "B-)": "",
         "8)": "",
@@ -333,7 +335,7 @@ def replace_smiley(text):
         "^o^": "",
         "^O^": "",
         "^0^": "",
-        "\o/": "",
+        "\o/": " "+Config.text.cheering+" ",
         "<o/": "",
         "<(^.^)>": "",
         "-^_^-": "",
@@ -345,10 +347,10 @@ def replace_smiley(text):
         ":i": "",
         "l:": "",
         ":(": "",
-        ":c": " sad ",
-        ":[": " sad ",
-        "=(": " sad ",
-        "=[": " sad ",
+        ":c": " "+Config.text.sad+" ",
+        ":[": " "+Config.text.sad+" ",
+        "=(": " "+Config.text.sad+" ",
+        "=[": " "+Config.text.sad+" ",
         ":'(": "",
         ":,(": "",
         ";(": "",
@@ -372,7 +374,6 @@ def replace_smiley(text):
         "x.X": "",
         "X.x": "",
         "x.x": "",
-
         ">.<": "",
         ">,<": "",
         "-.-": "",
@@ -389,7 +390,7 @@ def replace_smiley(text):
         "Ô_ô": "",
         "D:": "",
         "D8<": "",
-        "O_O": "",
+        "O_O": " "+Config.text.surprised+" ",
         "Ò_Ó": "",
         "U_U": "",
         "v_v": "",
@@ -399,18 +400,18 @@ def replace_smiley(text):
         "°^°": "",
         "(@_@)": "",
         ";.;": "",
-        ";)": " wink ",
-        ";-)": " wink ",
-        "^.-": " wink ",
+        ";)": " "+Config.text.wink+" ",
+        ";-)": " "+Config.text.wink+" ",
+        "^.-": " "+Config.text.wink+" ",
         ":§": "",
         ";D": "",
         ";-D": "",
-        ":P": "",
-        ":p": "",
+        ":P": " "+Config.text.stuck_out_tongue+" ",
+        ":p": " "+Config.text.stuck_out_tongue+" ",
         "c[=": "",
         ":p~~~~~~": "",
-        ":-*": " kiss ",
-        ":*": " kiss ",
+        ":-*": " "+Config.text.kiss+" ",
+        ":*": " "+Config.text.kiss+" ",
         ";*": "",
         ":-x": "",
         "C:": "",
@@ -418,8 +419,8 @@ def replace_smiley(text):
         ":-o": "",
         ":O": "",
         "0:-)": "",
-        "O:-)": "",
-        "3:)": " devil ",
+        "O:-)": " "+Config.text.innocent+" ",
+        "3:)": " " + Config.text.devilish + " ",
         "3:D": "",
         "-.-zZz": "",
         "(o)_(o)": "",
@@ -445,30 +446,30 @@ def replace_smiley(text):
         "x'DD": "",
         "l/l": "",
         ":o)>": "",
-        "(_8(I)": " Homer Simpson ",
-        "//:=|": " Hitler ",
-        "<3": " heart ",
-        "</3": " broken heart ",
-        "<'3": " broken heart ",
+        "@>--}---": " " + Config.text.rose + " ",
+        "@>-`-,--": " " + Config.text.rose + " ",
+        "(_|::|_)": "",
+        "c(_)": "",
+        "[:|]": "",
+        "(°oo°)": "",
+        "(.)(.)": " " + Config.text.boobs + " ",
+        "( . Y . )": " " + Config.text.boobs + " ",
+        "( . )": "",
+        "| . |": "",
+        ").(": "",
+        "(_i_)": " " + Config.text.butt + " ",
+        "( Y )": "",
+        "8===D": " " + Config.text.penis + " ",
+        "(_8(I)": " "+Config.text.homer_simpson+" ",
+        "//:=|": " "+Config.text.hitler+" ",
+        "<3": " "+Config.text.heart+" ",
+        "</3": " "+Config.text.broken_heart+" ",
+        "<'3": " "+Config.text.broken_heart+" ",
         "<°(((><": "",
         "<°{{{><": "",
         "<°++++<": "",
         ">)))°>": "",
         "o=(====>": "",
-        "@>--}---": "",
-        "@>-`-,--": "",
-        "(_|::|_)": "",
-        "c(_)": "",
-        "[:|]": "",
-        "(°oo°)": "",
-        "(.)(.)": "",
-        "( . Y . )": "",
-        "( . )": "",
-        "| . |": "",
-        ").(": "",
-        "(_i_)": "",
-        "( Y )": "",
-        "8===D": " penis "
     }
     text = text.split()
     reformed = [SMILEYS[word] if word in SMILEYS else word for word in text]
