@@ -101,7 +101,12 @@ def lemmatize(text):
 
 
 def remove_smiley(text):
-    # https://de.wiktionary.org/wiki/Verzeichnis:International/Smileys
+    """
+    Remove smileys
+
+    Sources: https://de.wiktionary.org/wiki/Verzeichnis:International/Smileys
+             https://en.wiktionary.org/wiki/Appendix:Emoticons
+    """
 
     SMILEYS = {
         ":)": "",
@@ -289,8 +294,12 @@ def remove_smiley(text):
 
 
 def replace_smiley(text):
-    # https://de.wiktionary.org/wiki/Verzeichnis:International/Smileys
+    """
+    Replace smileys by their meaning
 
+    Sources: https://de.wiktionary.org/wiki/Verzeichnis:International/Smileys
+             https://en.wiktionary.org/wiki/Appendix:Emoticons
+    """
     SMILEYS = {
         ":)": " "+Config.text.smile+" ",
         ":-)": " "+Config.text.smile+" ",
