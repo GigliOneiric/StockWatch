@@ -1,8 +1,8 @@
-from Twitter.TweetStreamListener import TweetStreamListener
+# from Twitter.TweetStreamListener import TweetStreamListener
 from TextPreprocessing import TextPreprocess
-
+from TextPreprocessing.Helpers.StopWords import StopWords
 
 class Main:
-    pass
-
+    s = StopWords(text).remove_stopwords()
+    print(s)
 
