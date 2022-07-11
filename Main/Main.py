@@ -1,6 +1,6 @@
-from Twitter.TweetStreamListener import TweetStreamListener
-from TextPreprocessing import TextPreprocess
+# from Twitter.TweetStreamListener import TweetStreamListener
+from Stocks.StockStreamListener import on_data
 
 
 class Main:
-    pass
+    on_data()
