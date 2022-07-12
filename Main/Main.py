@@ -1,6 +1,6 @@
-# from Twitter.TweetStreamListener import TweetStreamListener
-from Stocks.StockStreamListener import on_data
+from Twitter.TweetStreamListener import TweetStreamListener
+from Stocks.StockStreamListener import listen_stream
 
 
 class Main:
-    on_data()
+    listen_stream()
