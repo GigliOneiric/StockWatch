@@ -18,8 +18,8 @@ def listen_stream_timer():
     secs = delta_t.total_seconds()
 
     def repeat():
-        listen_stream()
         on_data()
+        listen_stream()
 
     t = Timer(secs, repeat)
     t.start()
