@@ -22,4 +22,10 @@ pip install -r requirements.txt
 ```
 
 ## Kibana
+Kibana can be accessed via the following link:
+http://localhost:5601/app/dashboards
+
+The login details are:
+Username: elastic
+Password: changeme
 
