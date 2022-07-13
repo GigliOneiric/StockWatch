@@ -21,11 +21,35 @@ docker-compose build && docker-compose up
 pip install -r requirements.txt
 ```
 
+## Setup
+### API-Keys in Config-Folder
+1. Rename twitter_api_keys (Demo).py to twitter_api_keys.py
+2. Create a twitter application at https://developer.twitter.com/en/portal/dashboard
+3. Insert Twitter API Keys to twitter_api_keys.py
+```
+consumer_key = "yourKEY"
+consumer_secret = "yourKEY"
+access_token = "yourKEY"
+access_token_secret = "yourKEY"
+bearer_token = "yourKEY"
+```
+
+### Change Twitter query in Twitter-Folder
+- See: https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule
+- Note: Rules are stored until they are deleted
+```
+stream.add_rules(tweepy.StreamRule("(tesla OR #tesla) from:1542485416443625472"))
+```
+
+## Start
+- Run main.py
+
 ## Kibana
 Kibana can be accessed via the following link:
 http://localhost:5601/app/dashboards
 
 The login details are:
+```
 Username: elastic
 Password: changeme
-
+```
