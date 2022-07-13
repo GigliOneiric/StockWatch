@@ -53,3 +53,8 @@ The login details are:
 Username: elastic
 Password: changeme
 ```
+
+## ToDo
+1. Setup KubeFlow
+2. Create an own ML-Modell
+3. Access the model with StockWatch via a REST API
