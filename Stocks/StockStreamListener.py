@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 from threading import Timer
 
 from ELK import StockWriter
+from ELK.Correlation import write_correlation
 
 
 def listen_stream():
@@ -47,3 +48,5 @@ def on_data():
         end = yesterday
         data = tesla.history(start=start, end=end)
         StockWriter.write_stock(data)
+
+    write_correlation()
