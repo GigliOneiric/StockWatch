@@ -4,9 +4,11 @@ from time import sleep
 import tweepy
 import Config.twitter_api_keys
 import Config.text
+import Config.kfp
 
 from ELK import TweetWriter
-from Sentiment.sentimentAnalyzer import analyzeSentiment
+from Sentiment import sentimentAnalyzer
+from Sentiment import sentimentAnalyzer_kfp
 from http.client import IncompleteRead
 
 consumer_key = Config.twitter_api_keys.consumer_key
@@ -21,9 +23,14 @@ class TweetStreamListener(tweepy.StreamingClient):
     def on_data(self, data):
         dict_data = json.loads(data)
 
-        result = analyzeSentiment(dict_data)
-        tweet = result[0]
-        sentiment = result[1]
+        if Config.kfp.kfp_analyzer == 'false':
+            result = sentimentAnalyzer.analyzeSentiment(dict_data)
+            tweet = result[0]
+            sentiment = result[1]
+        elif Config.kfp.kfp_analyzer == 'true':
+            result = sentimentAnalyzer_kfp.analyzeSentiment(dict_data)
+            tweet = result[0]
+            sentiment = result[1]
 
         TweetWriter.write_tweet(dict_data, tweet, sentiment)
 

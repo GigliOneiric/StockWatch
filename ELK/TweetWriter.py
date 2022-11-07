@@ -5,7 +5,7 @@ from elasticsearch import Elasticsearch
 es = Elasticsearch(hosts="http://elastic:changeme@localhost:9200/")
 
 
-def write_tweet(dict_data, tweet, sentiment):
+def write_tweet(dict_data, polarity, sentiment):
     # extract the first hashtag from the object
     # transform the Hashtags into proper case
 
@@ -29,8 +29,7 @@ def write_tweet(dict_data, tweet, sentiment):
         Config.text.date: dict_data[Config.text.data][Config.text.created_at],
         Config.text.text: dict_data[Config.text.data][Config.text.text],
         Config.text.hashtags: hashtags,
-        Config.text.polarity: tweet.sentiment.polarity,
-        Config.text.subjectivity: tweet.sentiment.subjectivity,
+        Config.text.polarity: polarity,
         Config.text.sentiment: sentiment,
     }
 

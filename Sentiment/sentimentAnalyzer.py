@@ -21,4 +21,4 @@ def analyzeSentiment(dict_data):
         # print the predicted sentiment with the Tweets
         print(sentiment, tweet_cleaned.sentiment.polarity, tweet_cleaned)
 
-        return tweet, sentiment
+        return tweet.polarity, sentiment
