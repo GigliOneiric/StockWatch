@@ -54,8 +54,8 @@ Username: elastic
 Password: changeme
 ```
 
-## Optional: Setup Kubeflow Pipelines with Sentiment-KFP
-Sentiment KLP is an open source analysis software used to perform sentiment analysis using Kubeflow pipelines with custom models.
+## Optional: Setup Kubeflow Pipelines (KFP) with Sentiment-KFP
+Sentiment KFP is an open source analysis software used to perform sentiment analysis using Kubeflow pipelines with custom models.
 
 ### Setup
 Follow the example at
