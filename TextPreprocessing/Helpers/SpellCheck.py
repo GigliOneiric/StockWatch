@@ -8,6 +8,7 @@ def check_spelling(input_text_or_list: Union[str, List[str]], lang='en'):
     if input_text_or_list is None or len(input_text_or_list) == 0:
         return ''
     spelling_checker = SpellChecker(language=lang, distance=1)
+    spelling_checker.word_frequency.load_words(["Elon", "Musk"])
 
     if isinstance(input_text_or_list, str):
         if not input_text_or_list.islower():
