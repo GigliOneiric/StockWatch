@@ -9,22 +9,24 @@ from string import punctuation
 from TextPreprocessing.Helpers import Smileys
 from TextPreprocessing.Helpers import Emojis
 from TextPreprocessing.Helpers import SpellCheck
+from TextPreprocessing.Helpers.Companies import replace_companies
 from TextPreprocessing.Helpers.StopWords import StopWords
 
 
 def preprocess(text):
     downloadNLTK()
 
+    text = replace_companies(text)
     text = remove_html_tags(text)
     text = replace_url(text)
     text = replace_atUser(text)
     text = replace_smiley(text)
     text = replace_emojis(text)
     text = remove_leetspeak(text)
-    text = remove_numbers(text)
     text = check_spelling(text)
     text = replace_contractions(text)
     text = remove_punct(text)
+    text = replace_numbers(text)
     text = to_lower(text)
     text = lemmatize(text)
     text = clean_white_space(text)
@@ -77,6 +79,10 @@ def replace_url(text):
 def remove_numbers(text):
     text = ''.join([i for i in text if not i.isdigit()])
     return text
+
+
+def replace_numbers(text):
+    return re.sub(r"\b\d+\b", "number", text)
 
 
 def to_lower(text):
