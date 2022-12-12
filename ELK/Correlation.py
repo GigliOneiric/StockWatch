@@ -20,7 +20,11 @@ def write_correlation():
 
 
 def check_correlation():
-    df = merge_polarity_close_by_date()
+
+    df = pd.DataFrame()
+
+    if es.indices.exists(index="twitter") and es.indices.exists(index="yahoo"):
+        df = merge_polarity_close_by_date()
 
     if len(df) > 1:
         correlation = df[Config.text.close].corr(df['avg_polarity'])
