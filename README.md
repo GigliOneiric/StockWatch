@@ -38,7 +38,7 @@ bearer_token = "yourKEY"
 - See: https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule
 - Note: Rules are stored until they are deleted
 ```
-stream.add_rules(tweepy.StreamRule("(tesla OR #tesla) from:1542485416443625472"))
+stream.add_rules(tweepy.StreamRule("(tesla AND #tesla) lang:en -is:retweet -is:reply"))
 ```
 
 ### Start
