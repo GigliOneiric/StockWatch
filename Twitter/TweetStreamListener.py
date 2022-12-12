@@ -48,7 +48,7 @@ class TweetStreamListener(tweepy.StreamingClient):
             print(status_code)
 
 
-stream = TweetStreamListener(bearer_token=bearer_token, wait_on_rate_limit=False)
+stream = TweetStreamListener(bearer_token=bearer_token, wait_on_rate_limit=True)
 stream.add_rules(tweepy.StreamRule("tesla (#tesla) lang:en -is:retweet -is:reply"))
 
 #print(stream.get_rules())
