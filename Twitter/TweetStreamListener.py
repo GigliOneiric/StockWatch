@@ -49,11 +49,10 @@ class TweetStreamListener(tweepy.StreamingClient):
 
 
 stream = TweetStreamListener(bearer_token=bearer_token, wait_on_rate_limit=True)
-stream.add_rules(tweepy.StreamRule("tesla (#tesla) lang:en -is:retweet -is:reply"))
-
-#print(stream.get_rules())
-#stream.delete_rules(1602355560506179585)
-# print(stream.get_rules())
+stream.add_rules(tweepy.StreamRule('#tesla lang:en -is:retweet -is:reply -has:images -is:quote'))
+# stream.add_rules(tweepy.StreamRule("(tesla OR #tesla) from:1542485416443625472"))
+print(stream.get_rules())
+stream.delete_rules(1604569131314970631)
 
 try:
     stream.filter(expansions=[Config.text.author_id],

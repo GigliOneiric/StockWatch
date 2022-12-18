@@ -16,6 +16,7 @@ from TextPreprocessing.Helpers.StopWords import StopWords
 def preprocess(text):
     downloadNLTK()
 
+    text = clean_encoding(text)
     text = replace_companies(text)
     text = remove_html_tags(text)
     text = replace_url(text)
@@ -135,3 +136,7 @@ def clean_white_space(text):
 
 def check_spelling(text):
     return SpellCheck.check_spelling(text, lang='en')
+
+
+def clean_encoding(text):
+    return text.encode('latin1', 'ignore').decode('utf8', 'ignore').encode('latin1', 'ignore').decode('utf8', 'ignore')
