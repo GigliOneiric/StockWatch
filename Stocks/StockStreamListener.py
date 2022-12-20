@@ -45,7 +45,7 @@ def on_data():
 
     if last < yesterday:
         start = last + timedelta(days=1)
-        end = yesterday
+        end = today
         data = tesla.history(start=start, end=end)
         StockWriter.write_stock(data)
 

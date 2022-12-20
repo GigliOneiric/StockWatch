@@ -2,6 +2,7 @@ import Config.text
 import pandas as pd
 import eland as ed
 
+from datetime import date
 from elasticsearch import Elasticsearch
 
 # create instance of elasticsearch
@@ -13,10 +14,11 @@ def write_correlation():
 
     doc = {
         Config.text.id: 1,
-        Config.text.correlation: correlation,
+        Config.text.date: date.today(),
+        Config.text.correlation: str(correlation)
     }
 
-    es.index(index="correlation", id='1', document=doc)
+    es.index(index="correlation", id=1, document=doc)
 
 
 def check_correlation():
