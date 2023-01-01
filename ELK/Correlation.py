@@ -22,7 +22,6 @@ def write_correlation():
 
 
 def check_correlation():
-
     df = pd.DataFrame()
 
     if es.indices.exists(index="twitter") and es.indices.exists(index="yahoo"):
@@ -50,8 +49,10 @@ def polarity_by_date():
     df = ed.DataFrame('http://elastic:changeme@localhost:9200/', 'twitter')
     df = ed.eland_to_pandas(df)
 
+    df[Config.text.date] = pd.to_datetime(df[Config.text.date]).dt.tz_convert('CET')
     df[Config.text.date] = df[Config.text.date].dt.date
-    df = df.groupby(Config.text.date)[Config.text.polarity].mean().reset_index()
+
+    df = df.groupby(Config.text.date).mean().reset_index()
     df.columns = [Config.text.date, 'avg_polarity']
 
     return df
