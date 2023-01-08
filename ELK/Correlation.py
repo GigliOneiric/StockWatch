@@ -28,7 +28,7 @@ def check_correlation():
         df = merge_polarity_close_by_date()
 
     if len(df) > 1:
-        correlation = df[Config.text.close].corr(df['avg_polarity'])
+        correlation = df[Config.text.close].corr(df['avg_polarity'], method='pearson')
     else:
         correlation = 0
 
@@ -63,7 +63,9 @@ def close_by_date():
     df = ed.DataFrame('http://elastic:changeme@localhost:9200/', 'yahoo')
     df = ed.eland_to_pandas(df)
 
+    df[Config.text.date] = pd.to_datetime(df[Config.text.date]).dt.tz_localize('UTC').dt.tz_convert('CET')
     df[Config.text.date] = df[Config.text.date].dt.date
+
     df = df.reset_index()
     df = df[[Config.text.date, Config.text.close]].copy()
 
